@@ -1,0 +1,282 @@
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────────────────────────
+   DISCOVER SAUVIK — design tokens
+   Twilight garden palette: deep ink, muted coral, honey, sage, lilac.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-sans: 'Manrope Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  /* the island's type system */
+  --font-grotesk: 'Bricolage Grotesque Variable', 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-hand: 'Caveat Variable', 'Segoe Print', cursive;
+
+  --color-ink: #0e0f1f;
+  --color-ink-2: #14152a;
+  --color-ink-3: #1c1d37;
+  --color-bone: #f3ece1;
+  --color-mist: #aaa6c3;
+  --color-dim: #7d7998;
+  --color-coral: #e8876b;
+  --color-peach: #f2b38f;
+  --color-honey: #e9b663;
+  --color-sage: #8cc3b0;
+  --color-lilac: #b3a5ea;
+  --color-plum: #3b2d5e;
+  --color-silk: #f4eee6;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --nav-h: 72px;
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scrollbar-gutter: stable;
+  overflow-x: clip;
+}
+html.locked,
+html.locked body {
+  overflow: hidden;
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  overflow-x: clip;
+}
+::selection {
+  background: rgba(233, 182, 99, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-honey);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+html.spider-hover,
+html.spider-hover * {
+  cursor: pointer;
+}
+
+/* ── typography ───────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 0;
+  font-optical-sizing: auto;
+}
+.wonk {
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+}
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+
+/* ── the fixed 3D world ───────────────────────────────────── */
+.world {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+.world--landing {
+  z-index: 10;
+}
+.world--overlay {
+  z-index: 45;
+}
+.world *,
+.world canvas {
+  pointer-events: none !important;
+}
+.world canvas {
+  display: block;
+}
+
+/* ── landing fallback backdrop (no WebGL) ─────────────────── */
+.landing-css-bg {
+  position: fixed;
+  inset: 0;
+  /* the same dusk seascape as the 3D backdrop: low sun, glittering path, twilight sky */
+  background:
+    radial-gradient(9% 9% at 86% 54%, rgba(255, 237, 199, 0.95), rgba(255, 237, 199, 0) 70%),
+    radial-gradient(32% 26% at 86% 55%, rgba(255, 156, 97, 0.55), transparent 70%),
+    radial-gradient(4% 30% at 86% 80%, rgba(255, 170, 110, 0.45), transparent 75%),
+    linear-gradient(
+      180deg,
+      #121430 0%,
+      #37305f 30%,
+      #94587a 48%,
+      #fbb081 54.5%,
+      #8a6584 55.2%,
+      #1c4a66 64%,
+      #0b1a30 100%
+    );
+  animation: sea-breathe 9s ease-in-out infinite alternate;
+}
+@keyframes sea-breathe {
+  to {
+    filter: brightness(1.06) saturate(1.05);
+  }
+}
+
+/* ── the iris transition ──────────────────────────────────── */
+.iris {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  --r: 0%;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(20, 8, 4, 0.22) 0deg 1.6deg, rgba(0, 0, 0, 0) 1.6deg 4.2deg),
+    radial-gradient(
+      circle at 50% 50%,
+      #f6c86a calc(var(--r) + 0.2%),
+      #d58a3c calc(var(--r) + 4%),
+      #8c4321 calc(var(--r) + 10%),
+      #2b140c calc(var(--r) + 16%),
+      #0d0912 calc(var(--r) + 24%)
+    );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent var(--r), #000 calc(var(--r) + 0.6%));
+  mask-image: radial-gradient(circle at 50% 50%, transparent var(--r), #000 calc(var(--r) + 0.6%));
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  position: relative;
+  isolation: isolate;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 238, 230, 0.22);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 10px 40px -10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition:
+    border-color 0.5s var(--ease-out-soft),
+    box-shadow 0.5s var(--ease-out-soft),
+    background 0.5s var(--ease-out-soft);
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--a, 0deg), transparent 0 70%, rgba(242, 179, 143, 0.9) 82%, rgba(233, 182, 99, 0.9) 88%, transparent 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: -1;
+}
+.cta:hover::before,
+.cta:focus-visible::before {
+  opacity: 1;
+  animation: spin-border 3.2s linear infinite;
+}
+.cta:hover,
+.cta:focus-visible {
+  border-color: rgba(242, 179, 143, 0.45);
+  background: linear-gradient(180deg, rgba(242, 179, 143, 0.14), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 18px 60px -12px rgba(232, 135, 107, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+@property --a {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes spin-border {
+  to {
+    --a: 360deg;
+  }
+}
+
+/* ── shared bits ──────────────────────────────────────────── */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.45s var(--ease-out-soft);
+}
+.link-underline:hover,
+.link-underline:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── SVG Bit ──────────────────────────────────────────────── */
+.svg-blink {
+  transform-box: view-box;
+  animation: svg-blink 4.6s infinite;
+}
+@keyframes svg-blink {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  95.5% {
+    transform: scaleY(0.08);
+  }
+}
+.svg-wave {
+  transform-box: view-box;
+  animation: svg-wave 0.9s ease-in-out infinite alternate;
+}
+@keyframes svg-wave {
+  from {
+    transform: rotate(-10deg);
+  }
+  to {
+    transform: rotate(16deg);
+  }
+}
+
+/* ── small shared entrance ────────────────────────────────── */
+.about-card-in {
+  animation: card-in 0.6s var(--ease-out-soft) both;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
